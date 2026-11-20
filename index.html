@@ -1,208 +1,87 @@
-```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title></title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10100f">
+<title>BELLWOOD — Şehir seni tanıyor.</title>
 <style>
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #080808;
-}
-
-#bomb {
-    position: absolute;
-    left: 50%;
-    top: -100px;
-    width: 80px;
-    height: 80px;
-    margin-left: -40px;
-    background: #222;
-    border: 5px solid #555;
-    border-radius: 50%;
-    box-shadow: inset -12px -12px 15px #000,
-                8px 12px 20px #000;
-    z-index: 5;
-}
-
-#bomb:before {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 25px;
-    background: #333;
-    left: 25px;
-    top: -25px;
-    border-radius: 5px;
-}
-
-#fuse {
-    position: absolute;
-    width: 25px;
-    height: 5px;
-    background: #8b4513;
-    left: 42px;
-    top: -28px;
-    transform: rotate(-35deg);
-}
-
-#spark {
-    position: absolute;
-    left: 64px;
-    top: -38px;
-    width: 10px;
-    height: 10px;
-    background: #ffcc00;
-    border-radius: 50%;
-    box-shadow: 0 0 15px 8px #ff6600;
-}
-
-#boom {
-    display: none;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 150px;
-    z-index: 20;
-}
-
-#message {
-    display: none;
-    position: absolute;
-    width: 100%;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    text-align: center;
-    color: white;
-    font-family: Arial, sans-serif;
-    font-size: clamp(30px, 6vw, 65px);
-    font-weight: bold;
-    z-index: 30;
-}
-
-@keyframes fall {
-    0% {
-        top: -100px;
-        transform: rotate(0deg);
-    }
-
-    70% {
-        top: calc(100vh - 180px);
-        transform: rotate(300deg);
-    }
-
-    82% {
-        top: calc(100vh - 110px);
-        transform: rotate(350deg) scale(1.1);
-    }
-
-    90% {
-        top: calc(100vh - 150px);
-        transform: rotate(380deg) scale(.95);
-    }
-
-    100% {
-        top: calc(100vh - 125px);
-        transform: rotate(400deg);
-    }
-}
-
-@keyframes boom {
-    0% {
-        transform: translate(-50%, -50%) scale(.1);
-        opacity: 0;
-    }
-
-    25% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translate(-50%, -50%) scale(2.5);
-        opacity: 0;
-    }
-}
-
-@keyframes shake {
-    0% { transform: translate(0,0); }
-    20% { transform: translate(-12px,8px); }
-    40% { transform: translate(12px,-8px); }
-    60% { transform: translate(-8px,-5px); }
-    80% { transform: translate(8px,5px); }
-    100% { transform: translate(0,0); }
-}
-
-.shake {
-    animation: shake .4s;
-}
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{--bg:#10100f;--paper:#e8e3d6;--muted:#a6a093;--acid:#d7ff43;--red:#ff654e;--line:#38372f;--panel:#191916}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--paper);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}.mono{font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.09em;font-size:10px;color:var(--muted)}
+nav{height:70px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;position:relative;z-index:2;background:#10100fe8}
+.brand{font-weight:700;letter-spacing:-.08em;font-size:24px}.brand span{color:var(--acid)}.navlinks{display:flex;gap:28px;font:10px 'DM Mono';text-transform:uppercase;color:var(--muted)}.navlinks a:hover{color:var(--acid)}
+.hero{min-height:670px;position:relative;padding:8vw 5vw 70px;display:flex;align-items:flex-end;overflow:hidden;background:linear-gradient(90deg,#10100f 0%,#10100fdd 38%,#10100f33 100%),linear-gradient(0deg,#10100f 0%,transparent 48%),url('https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=2000&q=85') center 45%/cover}
+.hero:after{content:"BELLWOOD / BELLWOOD / BELLWOOD /";position:absolute;top:75px;right:-40px;transform:rotate(90deg);transform-origin:right top;color:#ffffff22;font:11px 'DM Mono';letter-spacing:.4em}
+.hero-inner{max-width:820px;position:relative;z-index:1}.eyebrow{display:flex;align-items:center;gap:12px;color:var(--acid)}.dot{width:7px;height:7px;border-radius:50%;background:var(--acid);box-shadow:0 0 14px var(--acid)}
+h1{font-size:clamp(68px,13vw,170px);line-height:.78;letter-spacing:-.105em;margin:28px 0 30px;font-weight:700}h1 em{font-style:normal;color:var(--acid)}.hero p{font-size:clamp(15px,2vw,19px);line-height:1.55;color:#d1ccbd;max-width:520px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}.btn{padding:15px 20px;border:1px solid var(--paper);font:11px 'DM Mono';text-transform:uppercase;letter-spacing:.08em;background:transparent;color:var(--paper);transition:.2s}.btn.primary{background:var(--acid);color:#111;border-color:var(--acid);font-weight:500}.btn:hover{transform:translateY(-3px);box-shadow:4px 4px 0 var(--red)}
+.stamp{position:absolute;right:8vw;bottom:95px;border:1px solid var(--red);color:var(--red);padding:12px 15px;transform:rotate(8deg);font:10px 'DM Mono';line-height:1.6}
+.ticker{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:13px 0;color:var(--acid);font:11px 'DM Mono';white-space:nowrap}.ticker span{display:inline-block;animation:move 28s linear infinite}@keyframes move{to{transform:translateX(-50%)}}
+section{padding:100px 5vw;border-bottom:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:44px}.section-head h2{font-size:clamp(38px,6vw,76px);letter-spacing:-.08em;line-height:.9;margin:12px 0 0}.section-head p{max-width:310px;color:var(--muted);line-height:1.6;font-size:13px}
+.introgrid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.bigquote{background:var(--acid);color:#111;padding:38px;min-height:310px;display:flex;flex-direction:column;justify-content:space-between}.bigquote blockquote{font-size:clamp(27px,4vw,48px);line-height:1.02;letter-spacing:-.06em;margin:25px 0}.bigquote .mono{color:#333}.note{background:var(--panel);border:1px solid var(--line);padding:30px;position:relative}.note:after{content:"NOT A PUBLIC SERVICE ANNOUNCEMENT";position:absolute;right:15px;bottom:15px;font:8px 'DM Mono';color:#5f5c51}.note h3{font-size:26px;letter-spacing:-.05em;margin:18px 0}.note p{color:var(--muted);font-size:14px;line-height:1.7}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);min-height:280px;padding:25px;position:relative;overflow:hidden}.card .num{font:11px 'DM Mono';color:var(--acid)}.card h3{font-size:29px;letter-spacing:-.06em;margin:55px 0 12px}.card p{font-size:13px;line-height:1.6;color:var(--muted);max-width:300px}.card b{color:var(--paper)}.scribble{position:absolute;right:20px;top:18px;color:#ffffff16;font-size:65px;font-weight:700;letter-spacing:-.1em}
+.city{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:stretch}.mapbox{min-height:390px;background:#22221d;border:1px solid var(--line);position:relative;overflow:hidden;padding:24px}.mapbox svg{position:absolute;inset:0;width:100%;height:100%;opacity:.8}.maplabel{position:relative;z-index:1;background:var(--acid);color:#111;display:inline-block;padding:8px 10px;font:10px 'DM Mono';transform:rotate(-2deg)}.citycopy{display:flex;flex-direction:column;justify-content:center}.citycopy h3{font-size:clamp(32px,4vw,52px);line-height:.95;letter-spacing:-.07em;margin:0 0 20px}.citycopy p{color:var(--muted);line-height:1.7;font-size:14px}.warning{border-left:2px solid var(--red);padding:12px 16px;margin-top:20px;color:#d5cfc0;font:10px 'DM Mono';line-height:1.7}
+.footer{padding:35px 5vw;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--muted);font:10px 'DM Mono';text-transform:uppercase}
+.modal{position:fixed;inset:0;background:#000c;display:none;place-items:center;z-index:10;padding:20px}.modal.open{display:grid}.modalbox{max-width:500px;width:100%;background:var(--paper);color:#111;padding:32px;position:relative;box-shadow:10px 10px 0 var(--acid)}.modalbox h3{font-size:34px;letter-spacing:-.07em;margin:10px 0}.modalbox p{line-height:1.6;color:#49463e}.close{position:absolute;right:15px;top:12px;background:none;border:0;font-size:25px;color:#111}.glitch{animation:glitch .25s steps(2) 2}@keyframes glitch{0%{transform:translate(0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-3px,2px)}75%{transform:translate(2px,1px)}}
+@media(max-width:760px){.navlinks{gap:12px;font-size:8px}.hero{min-height:650px;padding-bottom:55px;background-position:58% center}.stamp{right:7vw;bottom:28px}.introgrid,.city{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.section-head{display:block}.section-head p{margin-top:20px}section{padding:75px 6vw}.bigquote{min-height:260px}.mapbox{min-height:300px}}
+@media(max-width:420px){nav{padding:0 5vw}.navlinks a:nth-child(2){display:none}.hero{min-height:600px}.stamp{display:none}.btn{width:100%;text-align:center}}
 </style>
 </head>
-
 <body>
-
-<div id="bomb">
-    <div id="fuse"></div>
-    <div id="spark"></div>
-</div>
-
-<div id="boom">💥</div>
-
-<div id="message">
-    naz elinden düsürdü prdn
-</div>
-
-<!-- SENİN YÜKLEDİĞİN PATLAMA SESİ -->
-<audio id="explosionSound" preload="auto">
-    <source src="dragon-studio-nuclear-explosion-386181.mp3" type="audio/mpeg">
-</audio>
-
+<nav>
+  <a class="brand" href="#">BELL<span>WOOD</span><sup style="font:9px 'DM Mono';color:var(--muted);vertical-align:top">™</sup></a>
+  <div class="navlinks"><a href="#story">dosya 01</a><a href="#city">şehir</a><a href="#people">şüpheliler</a><a href="#about">hakkında</a></div>
+</nav>
+<header class="hero">
+ <div class="hero-inner">
+  <div class="eyebrow mono"><i class="dot"></i> ŞEHİRDE HER ŞEY YOLUNDA. SÖZDE.</div>
+  <h1>BELL<br><em>WOOD.</em></h1>
+  <p>Bir şehir. Bir sürü yanlış karar. Ve kimsenin üstlenmek istemediği, fazlasıyla pahalı bir problem.</p>
+  <div class="actions"><button class="btn primary" id="startBtn">DOSYAYI AÇ ↗</button><a class="btn" href="#story">ÖNCE BİR BAKALIM</a></div>
+ </div>
+ <div class="stamp">BELEDİYE ONAYLI<br>MUHTEMELEN.</div>
+</header>
+<div class="ticker"><span>✳ KAMU HİZMETİ AKSAMAZ &nbsp; ✳ KAYIP EŞYA BÜROSU 08:00–17:00 &nbsp; ✳ HERKESİN BİR AÇIKLAMASI VAR &nbsp; ✳ BELLWOOD'A HOŞ GELDİNİZ &nbsp; ✳ KAMU HİZMETİ AKSAMAZ &nbsp; ✳ KAYIP EŞYA BÜROSU 08:00–17:00 &nbsp; ✳ HERKESİN BİR AÇIKLAMASI VAR &nbsp; ✳ BELLWOOD'A HOŞ GELDİNİZ &nbsp;</span></div>
+<section id="story">
+ <div class="section-head"><div><div class="mono">01 / ÖZETLE, FELAKET</div><h2>HER ŞEY<br><em style="color:var(--red)">NORMALDİ.</em></h2></div><p>Bellwood'da küçük bir aksilik, kısa sürede kimsenin kontrol edemediği bir meseleye dönüşür.</p></div>
+ <div class="introgrid">
+  <div class="bigquote"><div class="mono">ŞEHRİN RESMÎ SLOGANI</div><blockquote>“Sorun yok. Sorun varsa da bizimle ilgili değil.”</blockquote><div class="mono">— Bellwood Belediyesi / İletişim Birimi</div></div>
+  <div class="note"><div class="mono">OLAY RAPORU // TASLAK</div><h3>Kayıp bir araç. Fazla tanık. Daha fazla soru.</h3><p>Bir mahallede yaşanan karmaşanın ardından belediyeye ait bir araç ortadan kaybolur. Olayın çevresinde bulunan iki kişinin yolları kesişir. Başta sıradan görünen mesele, şehrin perde arkasına uzanan bir düğüme dönüşmeye başlar.</p><p><b>Not:</b> Bu bölüm hikâyenin ilk taslak fikridir. Olayın ayrıntıları ve karakterlerin geçmişleri henüz kesinleştirilmedi.</p></div>
+ </div>
+</section>
+<section id="people">
+ <div class="section-head"><div><div class="mono">02 / DOSYADAKİ İSİMLER</div><h2>İKİ KİŞİ.<br>ÇOK FAZLA <em style="color:var(--acid)">SORU.</em></h2></div><p>İsimler ve meslekler şimdilik çalışma notu. Hikâyenin gerçek karakter dosyalarını birlikte netleştireceğiz.</p></div>
+ <div class="cards">
+  <article class="card"><div class="scribble">01</div><div class="num">DOSYA A / GEÇİCİ</div><h3>EREN?</h3><p>Pratik, alaycı, olayların içine kendi isteği dışında çekilen bir tamirci. <b>Şimdilik yalnızca fikir.</b></p></article>
+  <article class="card"><div class="scribble">02</div><div class="num">DOSYA B / GEÇİCİ</div><h3>MORGAN?</h3><p>Meraklı, inatçı, yerel haber/radyo çevresinden biri. Olayın peşine kendi isteğiyle düşüyor. <b>Şimdilik yalnızca fikir.</b></p></article>
+  <article class="card"><div class="scribble">??</div><div class="num">DOSYA C / AÇIK</div><h3>ŞEHİR HALKI</h3><p>Mahalle sakinleri, esnaf, belediye çalışanları ve her şeyi bildiğini iddia eden insanlar. Bazıları gerçekten bir şey biliyor olabilir.</p></article>
+ </div>
+</section>
+<section id="city">
+ <div class="section-head"><div><div class="mono">03 / OLAY YERİ</div><h2>GÜZEL<br>ŞEHİR. <em style="color:var(--red)">GARİP</em><br>İNSANLAR.</h2></div></div>
+ <div class="city">
+  <div class="mapbox"><span class="maplabel">BELLWOOD / BÖLGE HARİTASI — TASLAK</span>
+   <svg viewBox="0 0 600 420" preserveAspectRatio="none" aria-label="Şematik şehir haritası"><g fill="none" stroke="#aaa58f" stroke-width="15" opacity=".22"><path d="M-20 320 L180 230 310 260 620 100"/><path d="M90 -20 L210 440"/><path d="M380 -20 L340 440"/><path d="M-20 100 L620 350"/></g><g fill="#d7ff43"><circle cx="180" cy="230" r="7"/><circle cx="340" cy="260" r="7"/><circle cx="440" cy="180" r="7"/></g><g fill="#e8e3d6" font-family="monospace" font-size="12"><text x="115" y="205">OLD BLOCK</text><text x="365" y="245">DOWNTOWN</text><text x="430" y="155">MOTEL ROW</text><text x="35" y="380">BELLWOOD / 001</text></g></svg>
+  </div>
+  <div class="citycopy"><div class="mono">KURGUSAL ŞEHİR // KONUM BELİRSİZ</div><h3>Biraz otoyol, biraz neon, biraz da balkon dedikodusu.</h3><p>Bellwood; geniş yolları, benzinlikleri, şehir merkezi ve kendine has mahalleleri olan kurgusal bir şehir. Amerikan şehir atmosferiyle Türkiye'den tanıdık mahalle karakterleri aynı dünyada buluşuyor.</p><div class="warning">UYARI: BU ŞEHİRDE HERKESİN BİR TANIDIĞI VAR. BAZEN BU, İŞLERİ DAHA DA KÖTÜLEŞTİRİR.</div></div>
+ </div>
+</section>
+<section id="about">
+ <div class="section-head"><div><div class="mono">04 / PROJE NOTU</div><h2>BU SADECE<br><em style="color:var(--acid)">BAŞLANGIÇ.</em></h2></div><p>Bu sayfa oyunun tanıtım sitesi için ilk görsel taslak. Oyun henüz oynanabilir değil.</p></div>
+ <div class="note"><div class="mono">GELİŞTİRME PANOSU</div><h3>Sonraki adımlar</h3><p>01 — Hikâyenin kesin olay örgüsünü yerleştir<br>02 — Karakter dosyalarını gerçek bilgilerle doldur<br>03 — Şehir bölgelerini ve görevleri tanımla<br>04 — Bu siteye gerçek görseller ve oynanış demosu ekle</p></div>
+</section>
+<footer class="footer"><span>BELLWOOD™ / WORK IN PROGRESS</span><span>BU ŞEHİRDE HER ŞEY KONTROL ALTINDA DEĞİL.</span><span>© 2026 — KURGUSAL EVREN</span></footer>
+<div class="modal" id="modal"><div class="modalbox"><button class="close" id="closeBtn">×</button><div class="mono">ERİŞİM KAYDI // 001</div><h3>Dosya açıldı.</h3><p>Bellwood arşivine hoş geldin. Bu sayfa bir oyun değil; oyunun dünyasını, hikâyesini ve tonunu kuracağımız ilk vitrin.</p><p><b>Durum:</b> Şüpheli derecede başlangıç aşamasında.</p><button class="btn primary" id="okBtn">ANLAŞILDI</button></div></div>
 <script>
-
-const bomb = document.getElementById("bomb");
-const boom = document.getElementById("boom");
-const message = document.getElementById("message");
-const explosionSound = document.getElementById("explosionSound");
-
-
-/* BOMBA DÜŞÜYOR */
-setTimeout(function() {
-    bomb.style.animation = "fall 1.4s ease-in forwards";
-}, 200);
-
-
-/* PATLAMA */
-setTimeout(function() {
-
-    bomb.style.display = "none";
-
-    boom.style.display = "block";
-    boom.style.animation = "boom .6s ease-out forwards";
-
-    document.body.classList.add("shake");
-
-    /* GERÇEK PATLAMA SESİ */
-    explosionSound.currentTime = 0;
-    explosionSound.play().catch(function() {
-        console.log("Tarayıcı sesi otomatik başlatmayı engelledi.");
-    });
-
-    /* YAZI */
-    setTimeout(function() {
-        message.style.display = "block";
-    }, 250);
-
-}, 1650);
-
+const modal=document.getElementById('modal');
+document.getElementById('startBtn').addEventListener('click',()=>{modal.classList.add('open');document.body.classList.add('glitch')});
+function closeModal(){modal.classList.remove('open');document.body.classList.remove('glitch')}
+document.getElementById('closeBtn').addEventListener('click',closeModal);
+document.getElementById('okBtn').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
 </script>
-
 </body>
-</html>
-```
+    </html>
