@@ -3,464 +3,375 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Bellwood — Somewhere, Somehow</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buraya bakacağını düşünmemiştim.</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#17202a;color:white;font-family:Arial,sans-serif;touch-action:none}
-button{border:0;font:inherit;cursor:pointer}
-#intro{position:fixed;inset:0;overflow:hidden;background:#253c4c}
-#intro svg{position:absolute;width:100%;height:100%;inset:0}
-.intro-shade{position:absolute;inset:0;background:linear-gradient(90deg,#111a27e8,#111a2788 48%,#111a2720),linear-gradient(0deg,#111a27a8,transparent 55%)}
-.intro-content{position:absolute;left:clamp(24px,8vw,110px);top:50%;transform:translateY(-50%);max-width:590px}
-.kicker{font-size:11px;letter-spacing:5px;color:#ffc18b;font-weight:bold}
-.logo{font-size:clamp(55px,12vw,112px);font-weight:1000;letter-spacing:-7px;line-height:.9;margin:20px 0;text-shadow:4px 6px 0 #0006}
-.logo span{color:#ff875e}
-.tagline{max-width:390px;color:#e6e8e5;font-size:14px;line-height:1.8}
-#start{margin-top:28px;padding:16px 27px;background:#ff875e;color:#20232a;font-weight:900;letter-spacing:2px;box-shadow:4px 4px 0 #934d3b}
-#start:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #934d3b}
-.version{font-size:10px;letter-spacing:2px;color:#ffffff99;margin-top:22px}
-#game{display:none;position:fixed;inset:0;background:#6d8c60}
-canvas{width:100%;height:100%;display:block;touch-action:none}
-#hud{position:absolute;inset:0;pointer-events:none}
-.topbar{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;gap:10px}
-.panel{background:#111d2bdf;border:1px solid #ffffff30;padding:11px 14px;box-shadow:0 5px 20px #0004;backdrop-filter:blur(8px)}
-.brand{font-size:16px;font-weight:1000;letter-spacing:2px}
-.brand span{color:#ff946c}
-#mission{font-size:11px;color:#e8d9c2;margin-top:5px;max-width:250px}
-#clock{font-size:11px;letter-spacing:2px;color:#d5e0e7}
-#prompt{position:absolute;bottom:24%;left:50%;transform:translateX(-50%);display:none;background:#111d2bdf;border:1px solid #ffffff45;padding:10px 15px;font-size:12px;white-space:nowrap}
-#dialogue{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);width:min(650px,94vw);background:#111c2aef;border:1px solid #ffffff44;padding:17px 19px;display:none;pointer-events:auto;box-shadow:0 12px 35px #0008}
-#speaker{font-size:11px;color:#ff9b70;letter-spacing:3px;font-weight:bold;margin-bottom:8px}
-#words{font-size:14px;line-height:1.65;color:#e8edf0}
-#next{float:right;margin-top:12px;padding:9px 15px;background:#ff865d;color:#171c23;font-size:11px;font-weight:bold}
-#controls{position:absolute;inset:0;pointer-events:none}
-#stick{position:absolute;left:22px;bottom:24px;width:128px;height:128px;border-radius:50%;background:#182638a8;border:2px solid #ffffff65;pointer-events:auto;touch-action:none;box-shadow:0 5px 20px #0005}
-#stick:before{content:"";position:absolute;inset:13px;border:1px solid #ffffff30;border-radius:50%}
-#knob{position:absolute;width:52px;height:52px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(145deg,#ffc18c,#ed754e);box-shadow:0 4px 12px #0008;border:2px solid #ffffff99;pointer-events:none}
-.ctrl{position:absolute;right:22px;bottom:34px;width:76px;height:76px;border-radius:50%;pointer-events:auto;touch-action:none;background:#ed8055;color:#20232a;font-weight:900;border:3px solid #ffffff88;box-shadow:0 5px 15px #0006}
-#run{right:108px;bottom:23px;width:57px;height:57px;background:#29465a;color:white;font-size:10px}
-#hint{position:absolute;right:17px;top:80px;font-size:10px;color:#ffffff9a;text-align:right;line-height:1.7}
-@media(max-height:500px){#stick{width:90px;height:90px}#knob{width:40px;height:40px}.ctrl{width:60px;height:60px;bottom:14px}#run{width:48px;height:48px;right:92px}}
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Special+Elite&display=swap');
+
+:root {
+  --bg: #11120f;
+  --paper: #d0cdbd;
+  --muted: #77786d;
+  --green: #a3a77b;
+  --line: #383a30;
+  --yellow: #c2ae70;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 75% 10%, #29291d 0%, transparent 35%),
+    var(--bg);
+  color: var(--paper);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+main {
+  max-width: 980px;
+  margin: auto;
+  padding: 65px 25px 100px;
+}
+
+header {
+  min-height: 390px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.tiny {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-family: 'Special Elite', serif;
+  font-size: clamp(35px, 7vw, 68px);
+  font-weight: 400;
+  line-height: 1.15;
+  max-width: 650px;
+  margin: 28px 0 20px;
+}
+
+header p {
+  color: #aaa99b;
+  max-width: 490px;
+}
+
+.header-bottom {
+  position: absolute;
+  bottom: 18px;
+  right: 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 55px;
+  padding-top: 55px;
+}
+
+h2 {
+  font-family: 'Special Elite', serif;
+  font-weight: 400;
+  font-size: 23px;
+  color: var(--green);
+  margin: 0 0 20px;
+}
+
+section {
+  margin-bottom: 55px;
+}
+
+.note {
+  border-left: 2px solid var(--green);
+  padding: 8px 18px;
+  color: #b8b6a8;
+  margin: 25px 0;
+}
+
+.scrap {
+  background: #1b1c17;
+  border: 1px solid var(--line);
+  padding: 20px;
+  margin: 18px 0;
+  transform: rotate(-.4deg);
+}
+
+.scrap:nth-child(even) { transform: rotate(.5deg); }
+
+.scrap small {
+  color: var(--muted);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.scrap p { margin: 0; }
+
+button {
+  font-family: inherit;
+  color: var(--paper);
+  background: transparent;
+  border: 1px solid #555747;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: .2s;
+  font-size: 12px;
+}
+
+button:hover {
+  background: #333628;
+  border-color: var(--green);
+}
+
+.answer {
+  color: var(--yellow);
+  min-height: 35px;
+  margin-top: 15px;
+}
+
+ul {
+  padding-left: 18px;
+  color: #aaa99b;
+}
+
+li { padding: 5px 0; }
+
+.right {
+  padding-top: 8px;
+}
+
+.big-question {
+  font-family: 'Special Elite', serif;
+  font-size: 28px;
+  line-height: 1.4;
+  color: #c2bfae;
+  margin: 20px 0;
+}
+
+.crossed {
+  text-decoration: line-through;
+  color: #65665c;
+}
+
+.stamp {
+  display: inline-block;
+  border: 1px solid #777653;
+  color: var(--yellow);
+  padding: 4px 10px;
+  transform: rotate(-4deg);
+  font-size: 10px;
+  margin: 15px 0;
+}
+
+.letter {
+  font-family: 'Special Elite', serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #b8b5a5;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 35px 0;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding-top: 25px;
+  color: var(--muted);
+  font-size: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+a { color: var(--green); }
+
+@media(max-width:700px) {
+  main { padding: 35px 20px 70px; }
+  .content { grid-template-columns: 1fr; gap: 5px; }
+  header { min-height: 350px; }
+  .header-bottom { position: static; margin-top: 35px; }
+}
 </style>
 </head>
 <body>
-<div id="intro">
-<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-<defs>
- <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#e98d71"/><stop offset=".65" stop-color="#f3bc88"/><stop offset="1" stop-color="#d6b28b"/></linearGradient>
- <linearGradient id="road" x2="0" y2="1"><stop stop-color="#626d72"/><stop offset="1" stop-color="#303b46"/></linearGradient>
-</defs>
-<rect width="1200" height="800" fill="url(#sky)"/>
-<circle cx="960" cy="145" r="68" fill="#ffe5a7"/>
-<path d="M0 400 Q240 300 470 395 T900 365 T1200 390 V800 H0Z" fill="#728f68"/>
-<g fill="#647a78" opacity=".7">
-<rect x="0" y="310" width="100" height="210"/><rect x="125" y="350" width="95" height="170"/>
-<rect x="260" y="280" width="115" height="240"/><rect x="410" y="330" width="100" height="190"/>
-<rect x="550" y="290" width="120" height="230"/><rect x="710" y="330" width="105" height="190"/>
-<rect x="850" y="270" width="130" height="250"/><rect x="1010" y="330" width="120" height="190"/>
-</g>
-<g stroke="#544341" stroke-width="5" stroke-linejoin="round">
-<path d="M25 525V355L150 275L275 355V525Z" fill="#d99a69"/>
-<path d="M10 360L150 260L290 360" fill="none" stroke="#a85e50" stroke-width="17"/>
-<path d="M300 525V370L425 290L550 370V525Z" fill="#78a79a"/>
-<path d="M285 375L425 280L565 375" fill="none" stroke="#426c65" stroke-width="17"/>
-<path d="M690 525V355L830 265L970 355V525Z" fill="#c87561"/>
-<path d="M675 360L830 250L985 360" fill="none" stroke="#8f514a" stroke-width="17"/>
-<path d="M980 525V375L1090 300L1200 375V525Z" fill="#d8b77d"/>
-<path d="M965 380L1090 285L1215 380" fill="none" stroke="#9b7954" stroke-width="17"/>
-</g>
-<g fill="#f7d49a" stroke="#544341" stroke-width="4">
-<rect x="70" y="385" width="55" height="70" rx="4"/><rect x="180" y="385" width="55" height="70" rx="4"/>
-<rect x="340" y="390" width="55" height="65" rx="4"/><rect x="455" y="390" width="55" height="65" rx="4"/>
-<rect x="750" y="385" width="55" height="70" rx="4"/><rect x="870" y="385" width="55" height="70" rx="4"/>
-<rect x="1010" y="400" width="55" height="65" rx="4"/><rect x="1115" y="400" width="55" height="65" rx="4"/>
-</g>
-<g font-family="Arial" font-weight="bold" text-anchor="middle">
-<rect x="52" y="465" width="210" height="36" rx="4" fill="#344d5b"/><text x="157" y="489" font-size="18" fill="#fff0d5">MINI MART</text>
-<rect x="320" y="465" width="210" height="36" rx="4" fill="#344d5b"/><text x="425" y="489" font-size="18" fill="#fff0d5">BLUE NOTE</text>
-<rect x="710" y="465" width="240" height="36" rx="4" fill="#39414b"/><text x="830" y="489" font-size="17" fill="#fff0d5">BELLWOOD HOTEL</text>
-</g>
-<path d="M0 565Q400 530 720 585T1200 560V800H0Z" fill="url(#road)"/>
-<path d="M0 570Q400 535 720 590T1200 565" fill="none" stroke="#d7c6a4" stroke-width="12"/>
-<path d="M0 680Q400 645 720 700T1200 675" fill="none" stroke="#f1d59c" stroke-width="5" stroke-dasharray="40 32"/>
-<g>
-<g transform="translate(610 425)"><rect x="-6" y="20" width="12" height="70" fill="#694c38"/><circle cy="8" r="42" fill="#3a754e"/><circle cx="-22" cy="-7" r="25" fill="#589568"/><circle cx="23" cy="-7" r="25" fill="#316848"/></g>
-<g transform="translate(1030 430)"><rect x="-6" y="20" width="12" height="70" fill="#694c38"/><circle cy="8" r="42" fill="#3a754e"/><circle cx="-22" cy="-7" r="25" fill="#589568"/><circle cx="23" cy="-7" r="25" fill="#316848"/></g>
-</g>
-<g transform="translate(625 620)"><ellipse cy="28" rx="65" ry="15" fill="#0004"/><rect x="-62" y="-5" width="124" height="42" rx="12" fill="#d85d4d" stroke="#493b3b" stroke-width="5"/><rect x="-30" y="-20" width="65" height="29" rx="9" fill="#477080" stroke="#493b3b" stroke-width="5"/><circle cx="-39" cy="37" r="13" fill="#252a30"/><circle cx="42" cy="37" r="13" fill="#252a30"/></g>
-<g fill="none" stroke="#594e4c" stroke-width="4" stroke-linecap="round"><path d="M720 190q15-17 30 0q15-17 30 0"/><path d="M790 220q10-12 20 0q10-12 20 0"/></g>
-</svg>
-<div class="intro-shade"></div>
-<div class="intro-content">
-<div class="kicker">WELCOME TO THE NEIGHBORHOOD</div>
-<div class="logo">BELL<span>WOOD</span></div>
-<div class="tagline">Küçük bir şehir. Büyük sorunlar. Ve bunların hiçbirini çözmek istemeyen insanlar.</div>
-<button id="start">ŞEHRE GİR →</button>
-<div class="version">BELLWOOD MUNICIPALITY · EST. 1987</div>
+<main>
+
+<header>
+  <div class="tiny">bir internet köşesi / muhtemelen yanlışlıkla açık</div>
+  <h1>Buraya bakacağını düşünmemiştim.</h1>
+  <p>Buraya bakacağını düşünmemiştim o yüzden rastgele doldurdum. Yine de takılmak istersen buyur. 🥱</p>
+  <div class="header-bottom">Kapı açık. Neden açık bilmiyorum.</div>
+</header>
+
+<div class="content">
+<div>
+
+<section>
+  <div class="tiny">01 — önemli bir mesele</div>
+  <h2>Vaktini burada mı çürütüyorsun?</h2>
+  <div class="big-question">Hayatın anlamını bulmakla uğraşmadın mı?</div>
+  <p style="color:var(--muted)">Gerçi buraya kadar geldiysen muhtemelen baska planların da pek iyi gitmiyor.</p>
+  <div class="note">İnsanları kirmaya gerek var mi.</div>
+</section>
+
+<section>
+  <div class="tiny">02 — rastgele bırakılmış şeyler</div>
+  <h2>Birileri bunları buraya koymuş.</h2>
+
+  <div class="scrap">
+    <small>not / 14:32</small>
+    <p>Bir gün her şeyi yoluna koyacağım. ama fazla üşengecim.</p>
+  </div>
+
+  <div class="scrap">
+    <small>önemli değil</small>
+    <p>Dolabın kapağını kapatınca içerideki eşyaların ne düşündüğünü hiç merak ettin mi? anca kendini düşün zaten</p>
+  </div>
+
+  <div class="scrap">
+    <small>yarım kalmış</small>
+    <p>Bugün çok verimli bir gün geçirecektim ama gün benden önce başladı. so sad buddy</p>
+  </div>
+
+  <div class="scrap">
+    <small>buluntu</small>
+    <p>Bir şeyleri unutmak için not alıp sonra notu unutmak. Güzel sistem.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tiny">03 — küçük bir araştırma</div>
+  <h2>Bir saniyeliğine ciddi olalım.</h2>
+  <p>Şu an dünyanın herhangi bir yerinde biri yanlışlıkla bir odaya girip neden geldiğini unutmuştur.</p>
+  <p>O kişi yalnız değil.</p>
+  <p>Artık sen de yalnız değilsin.cidden</p>
+</section>
+
+<section>
+  <div class="tiny">04 — buraya yazılmamıştı</div>
+  <h2>Bir liste.</h2>
+  <ul>
+    <li>şu icmek.</li>
+    <li>sevdigim birinin bacagina sarilmak</li>
+    <li>bilinci bir şekilde altına isemek.</li>
+    <li>saçımı turuncuya boyamak.</li>
+    <li>bilmiyorum.</li>
+    <li>Bu listeyi tamamlamak.</li>
+  </ul>
+</section>
+
+</div>
+
+<div class="right">
+
+<section>
+  <div class="tiny">kenar notu</div>
+  <div class="stamp">ACİL DEĞİL</div>
+  <p class="letter">Burada bulunması için özel bir sebep olmayan bazı şeyler var.</p>
+  <p style="color:var(--muted)">Bunların bir kısmı bilerek, bir kısmı da kimse bakmaz diye bırakıldı.</p>
+</section>
+
+<section>
+  <div class="tiny">05 — tamamen gereksiz</div>
+  <h2>Bir soru soracağım.</h2>
+  <p>Bir gün boyunca sadece tek bir kelime söyleyebilseydin hangisini seçerdin?</p>
+  <button onclick="answer('peki')">oluroyleseyler</button>
+  <button onclick="answer('neyse')">he</button>
+  <button onclick="answer('efendim')">naz super biri</button>
+  <div class="answer" id="answer">Cevabın bir yere kaydedilmeyecek. Zaten kim kaydedecek?</div>
+</section>
+
+<section>
+  <div class="tiny">06 — beklenmedik bir şey</div>
+  <h2>Bir cümle bırak.</h2>
+  <p id="sentence" class="letter">Bugün de bir şekilde buraya geldik.</p>
+  <button onclick="newSentence()">Başka bir tane</button>
+</section>
+
+<section>
+  <div class="tiny">07 — ufak bir aksaklık</div>
+  <h2>Bir şey eksik.</h2>
+  <p id="missing" style="color:var(--muted)">Burada bir şey vardı sanki.</p>
+  <button onclick="missing()">Bak bakalım</button>
+</section>
+
+<section>
+  <div class="tiny">08 — kişisel meseleler</div>
+  <p class="letter">Bazen bir şey anlatmaya başlayıp ortasında ne anlatacağını unutuyorsun.</p>
+  <p>İşte tam olarak öyle bir bölüm.</p>
+  <hr>
+  <p style="color:var(--muted)">Bu bölümün devamı daha sonra eklenecekti.</p>
+  <p style="color:var(--muted)">Daha sonra gelmedi.</p>
+</section>
+
+<section>
+  <div class="tiny">09 — çıkışa yakın</div>
+  <h2>Hâlâ burada mısın?</h2>
+  <p>İyi. Ben de bir şey yapmıyordum zaten.</p>
+  <button onclick="document.getElementById('bye').textContent='Tamam. Kapıyı çekerken dikkat et. gecen üstüne cikmaya calistim biraz bozuk..'">Çıkıyorum</button>
+  <p id="bye" class="answer"></p>
+</section>
+
 </div>
 </div>
 
-<div id="game">
-<canvas id="screen"></canvas>
-<div id="hud">
-<div class="topbar">
-<div class="panel"><div class="brand">BELL<span>WOOD</span></div><div id="mission">Görev: Mahalleye bir bak.</div></div>
-<div class="panel" id="clock">09:42 · PAZARTESİ</div>
-</div>
-<div id="prompt"></div>
-<div id="dialogue"><div id="speaker">MALIK</div><div id="words"></div><button id="next">DEVAM →</button></div>
-<div id="controls">
-<div id="stick"><div id="knob"></div></div>
-<button class="ctrl" id="action">ETKİLEŞ</button>
-<button class="ctrl" id="run">KOŞ</button>
-</div>
-<div id="hint">WASD / OK TUŞLARI<br>TELEFON: JOYSTICK</div>
-</div>
-</div>
+<footer>
+  <span>Buraya kadar geldiğin için bir şey demeyeceğim.</span>
+  <span>© Kimse özellikle uğraşmadı.</span>
+</footer>
+
+</main>
 
 <script>
-(()=>{
-const canvas=document.getElementById('screen'),ctx=canvas.getContext('2d');
-const intro=document.getElementById('intro'),game=document.getElementById('game');
-const stick=document.getElementById('stick'),knob=document.getElementById('knob');
-const promptBox=document.getElementById('prompt'),dialogue=document.getElementById('dialogue');
-const speaker=document.getElementById('speaker'),words=document.getElementById('words');
-const missionText=document.getElementById('mission');
-let W=0,H=0,dpr=1,started=false,dialogueOpen=false,mission=0,near=null,frame=0,inside=null;
-const world={w:2200,h:1600};
-const player={x:1080,y:960,speed:2.8,dir:'down'};
-const input={x:0,y:0,run:false},keys={};
-let lines=[],lineIndex=0,doorReturn={x:1080,y:960};
-let seed=33;
-function rand(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646}
-const buildings=[
-{x:220,y:230,w:280,h:190,name:'MINI MART',color:'#c98c62',roof:'#a85f49'},
-{x:690,y:180,w:330,h:220,name:'BLUE NOTE CAFE',color:'#65968a',roof:'#416e68'},
-{x:1280,y:230,w:300,h:190,name:'BELLWOOD HOTEL',color:'#b96d5d',roof:'#8d4c49'},
-{x:1770,y:260,w:250,h:180,name:'AUTO 88',color:'#7187a0',roof:'#4a5f79'},
-{x:260,y:1120,w:300,h:210,name:'LAUNDRY CLUB',color:'#a2789a',roof:'#795779'},
-{x:820,y:1160,w:330,h:190,name:'NOODLE BOX',color:'#cf985b',roof:'#a66b42'},
-{x:1430,y:1110,w:320,h:220,name:'RADIO BELL',color:'#77966c',roof:'#4e6e51'}
+function answer(word) {
+  document.getElementById('answer').textContent =
+    'Güzel. Bugünlük kelimen: ' + word + '. Başka bir şey söyleme hakkın yok, Aslına bakarsan burda ne yazdigininda oyle yinede sevdigim kelimelerdi onlara dikkat et.';
+}
+
+const sentences = [
+  'Birazdan bir şey yapacağım. Ne olduğunu bilmiyorum.',
+  'Buzdolabını açıp içine bakmak, aynen vaktini çalmak için yazdim.',
+  'Bazı günler sadece gün olmakla yetinmeli.',
+  'Bir şeyleri ertelemek de sonuçta bir şey yapmak.',
+  'Bence bu sayfada bir eksiklik var. Neyse.',
+  'Kendime bir iyilik yaptım. Sonra ne yaptığımı unuttum.',
+  'Bugün de evrenin küçük bir parçası olarak işimi yapmadım. varolgitsin'
 ];
-const npcs=[
-{x:1080,y:820,name:'MALIK',skin:'#c88f6c',shirt:'#54788a',hair:'#302b30',pants:'#333943',role:'Mahalle sakini'},
-{x:790,y:520,name:'NIA',skin:'#a96f56',shirt:'#b95d53',hair:'#30232b',pants:'#423842',role:'Kafe çalışanı'},
-{x:1510,y:840,name:'DEV',skin:'#d4a47e',shirt:'#6e805d',hair:'#322d2a',pants:'#414448',role:'Tamirci'}
+
+function newSentence() {
+  const item = sentences[Math.floor(Math.random() * sentences.length)];
+  document.getElementById('sentence').textContent = item;
+}
+
+const missingThings = [
+  'Bir dakika, buraya ne koymuştuk?',
+  'Yok. Gerçekten yok.',
+  'Bunu aramaktan vazgeçtim.',
+  'Belki de hiç burada değildi.',
+  'Tamam, buldum. Hayır, o başka bir şeymiş.'
 ];
-const trees=[];
-for(let i=0;i<125;i++){
- let x=rand()*world.w,y=rand()*world.h;
- if(Math.abs(y-800)<125||Math.abs(x-1155)<120)continue;
- trees.push({x,y,r:15+rand()*12,c:['#326b4b','#3d7950','#54885a','#285b43'][Math.floor(rand()*4)]});
+
+let missingIndex = 0;
+function missing() {
+  document.getElementById('missing').textContent =
+    missingThings[missingIndex % missingThings.length];
+  missingIndex++;
 }
-const cars=[
-{x:590,y:745,c:'#bd5549'},{x:1200,y:855,c:'#d2a44c'},
-{x:1670,y:745,c:'#527e9e'},{x:960,y:1030,c:'#929d9e'}
-];
-const interiorPeople=[
-{x:310,y:180,name:'KASİYER',skin:'#c68b69',shirt:'#668f7e',hair:'#302b30',pants:'#333943'},
-{x:380,y:220,name:'MÜŞTERİ',skin:'#d4a47e',shirt:'#9c6c83',hair:'#45302c',pants:'#34343b'}
-];
-function resize(){dpr=Math.min(devicePixelRatio||1,2);W=canvas.clientWidth;H=canvas.clientHeight;canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
-window.addEventListener('resize',resize);
-document.getElementById('start').addEventListener('click',()=>{
- intro.style.display='none';game.style.display='block';started=true;resize();requestAnimationFrame(loop);
-});
-function round(x,y,w,h,r,c){
- ctx.fillStyle=c;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();
-}
-function drawGround(){
- ctx.fillStyle='#82976b';ctx.fillRect(0,0,world.w,world.h);
- // Subtle ground grain, placed deterministically
- for(let i=0;i<850;i++){
-  const x=(i*137)%world.w,y=(i*281)%world.h;
-  ctx.fillStyle=i%4===0?'#9cab78':'#71885f';
-  ctx.globalAlpha=.22;ctx.fillRect(x,y,2+(i%3),1.5);
- }
- ctx.globalAlpha=1;
- // pavement and road
- ctx.fillStyle='#c0b49b';ctx.fillRect(0,680,world.w,22);ctx.fillRect(0,905,world.w,22);
- ctx.fillRect(1040,0,22,world.h);ctx.fillRect(1250,0,22,world.h);
- ctx.fillStyle='#3d474f';ctx.fillRect(0,702,world.w,203);ctx.fillRect(1062,0,188,world.h);
- ctx.fillStyle='#505b62';ctx.fillRect(0,718,world.w,171);ctx.fillRect(1080,0,152,world.h);
- // road grain
- for(let i=0;i<450;i++){
-  const x=(i*197)%world.w,y=(i*89)%world.h;
-  if((y>718&&y<889)||(x>1080&&x<1232)){
-   ctx.fillStyle=i%2?'#ffffff':'#111820';ctx.globalAlpha=.09;
-   ctx.fillRect(x,y,2+(i%4),1);
-  }
- }
- ctx.globalAlpha=1;
- ctx.strokeStyle='#d7c58e';ctx.lineWidth=3;ctx.setLineDash([28,26]);
- ctx.beginPath();ctx.moveTo(0,802);ctx.lineTo(world.w,802);ctx.moveTo(1155,0);ctx.lineTo(1155,world.h);ctx.stroke();ctx.setLineDash([]);
- // crosswalks
- for(let i=0;i<8;i++){
-  ctx.fillStyle='#e2ded0';ctx.fillRect(1000+i*12,692,7,45);ctx.fillRect(1080+i*12,905,7,45);
- }
-}
-function drawBuilding(b){
- ctx.save();
- // cast shadow
- round(b.x+12,b.y+20,b.w,b.h,9,'#17211d45');
- // side wall
- ctx.fillStyle='#534e49';
- ctx.beginPath();ctx.moveTo(b.x+b.w,b.y+12);ctx.lineTo(b.x+b.w+16,b.y+28);ctx.lineTo(b.x+b.w+16,b.y+b.h+8);ctx.lineTo(b.x+b.w,b.y+b.h);ctx.closePath();ctx.fill();
- // facade
- round(b.x,b.y,b.w,b.h,8,b.color);
- // roof plane
- ctx.fillStyle=b.roof;
- ctx.beginPath();ctx.moveTo(b.x-7,b.y+8);ctx.lineTo(b.x+b.w*.5,b.y-29);ctx.lineTo(b.x+b.w+7,b.y+8);ctx.lineTo(b.x+b.w,b.y+34);ctx.lineTo(b.x,b.y+34);ctx.closePath();ctx.fill();
- ctx.strokeStyle='#f5e4c344';ctx.lineWidth=2;ctx.stroke();
- // roof tiles / seams
- ctx.strokeStyle='#2c303044';ctx.lineWidth=1;
- for(let j=0;j<4;j++){
-  ctx.beginPath();ctx.moveTo(b.x+15,b.y+5+j*6);ctx.lineTo(b.x+b.w-15,b.y+5+j*6);ctx.stroke();
- }
- // windows
- const cols=Math.max(2,Math.floor((b.w-45)/70));
- for(let j=0;j<cols;j++){
-  const x=b.x+23+j*70;
-  round(x,b.y+62,40,48,4,'#344b55');
-  ctx.fillStyle='#d9b98c';ctx.fillRect(x+4,b.y+66,32,40);
-  ctx.fillStyle='#e9d4ac';ctx.fillRect(x+18,b.y+66,3,40);
-  ctx.fillStyle='#ffffff40';ctx.fillRect(x+5,b.y+67,5,38);
-  ctx.strokeStyle='#493e3a';ctx.lineWidth=2;ctx.strokeRect(x,b.y+62,40,48);
- }
- // signboard
- round(b.x+18,b.y+119,b.w-36,34,3,'#283840');
- ctx.fillStyle='#f0e5d2';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText(b.name,b.x+b.w/2,b.y+141);
- // door and step
- round(b.x+b.w/2-23,b.y+b.h-53,46,59,4,'#443b38');
- ctx.fillStyle='#8d7058';ctx.fillRect(b.x+b.w/2-25,b.y+b.h+4,50,6);
- ctx.fillStyle='#c8a77b';ctx.beginPath();ctx.arc(b.x+b.w/2+13,b.y+b.h-25,3,0,Math.PI*2);ctx.fill();
- // little facade details
- ctx.fillStyle='#ffffff20';ctx.fillRect(b.x+9,b.y+42,b.w-18,2);
- ctx.restore();
-}
-function drawTree(t){
- ctx.fillStyle='#4c3c2c';ctx.fillRect(t.x-4,t.y,8,20);
- ctx.fillStyle='#0003';ctx.beginPath();ctx.ellipse(t.x+5,t.y+18,t.r,t.r*.48,0,0,Math.PI*2);ctx.fill();
- ctx.fillStyle=t.c;ctx.beginPath();ctx.arc(t.x,t.y,t.r,0,Math.PI*2);ctx.fill();
- ctx.fillStyle='#ffffff20';ctx.beginPath();ctx.arc(t.x-5,t.y-6,t.r*.42,0,Math.PI*2);ctx.fill();
-}
-function drawCar(c){
- ctx.save();ctx.translate(c.x,c.y);
- ctx.fillStyle='#0004';ctx.beginPath();ctx.ellipse(3,17,37,13,0,0,Math.PI*2);ctx.fill();
- round(-36,-18,72,36,8,c.c);round(-20,-14,40,27,5,'#304753');
- ctx.fillStyle='#91b3bb';ctx.fillRect(-15,-11,13,22);ctx.fillRect(3,-11,12,22);
- ctx.fillStyle='#e8d49d';ctx.fillRect(-33,-11,4,7);ctx.fillRect(29,-11,4,7);
- ctx.fillStyle='#24282b';ctx.fillRect(-24,-22,12,5);ctx.fillRect(14,-22,12,5);ctx.fillRect(-24,17,12,5);ctx.fillRect(14,17,12,5);
- ctx.restore();
-}
-function drawPerson(p,isPlayer=false){
- ctx.save();ctx.translate(p.x,p.y);
- const moving=isPlayer&&Math.hypot(input.x,input.y)>.1;
- const bob=moving?Math.sin(frame*.24)*1.7:Math.sin(frame*.045+p.x)*.35;
- ctx.translate(0,bob);
- // soft contact shadow
- ctx.fillStyle='#111a1c55';ctx.beginPath();ctx.ellipse(0,15,14,6,0,0,Math.PI*2);ctx.fill();
- // legs and shoes
- ctx.strokeStyle=p.pants||'#353943';ctx.lineWidth=6;ctx.lineCap='round';
- ctx.beginPath();ctx.moveTo(-5,5);ctx.lineTo(-7,14);ctx.moveTo(5,5);ctx.lineTo(7,14);ctx.stroke();
- ctx.strokeStyle='#292d32';ctx.lineWidth=5;
- ctx.beginPath();ctx.moveTo(-7,14);ctx.lineTo(-10,15);ctx.moveTo(7,14);ctx.lineTo(10,15);ctx.stroke();
- // body
- round(-10,-13,20,23,7,p.shirt||'#355e9b');
- // arms
- ctx.strokeStyle=p.shirt||'#355e9b';ctx.lineWidth=5;ctx.lineCap='round';
- ctx.beginPath();ctx.moveTo(-9,-8);ctx.lineTo(-13,1);ctx.moveTo(9,-8);ctx.lineTo(13,1);ctx.stroke();
- // neck and face
- ctx.fillStyle=p.skin||'#c58c68';ctx.fillRect(-3,-16,6,5);
- ctx.beginPath();ctx.arc(0,-23,10,0,Math.PI*2);ctx.fill();
- // ears
- ctx.beginPath();ctx.arc(-9,-23,2.5,0,Math.PI*2);ctx.arc(9,-23,2.5,0,Math.PI*2);ctx.fill();
- // hairstyle
- ctx.fillStyle=p.hair||'#29242a';
- ctx.beginPath();ctx.arc(0,-26,10,Math.PI,Math.PI*2);ctx.quadraticCurveTo(12,-29,8,-19);ctx.quadraticCurveTo(3,-23,0,-22);ctx.quadraticCurveTo(-8,-18,-10,-23);ctx.closePath();ctx.fill();
- // eyes
- ctx.fillStyle='#25262a';ctx.beginPath();ctx.ellipse(-3.5,-23,1.1,1.6,0,0,Math.PI*2);ctx.ellipse(3.5,-23,1.1,1.6,0,0,Math.PI*2);ctx.fill();
- // subtle mouth
- ctx.strokeStyle='#754b40';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(-2,-18);ctx.quadraticCurveTo(0,-16,2,-18);ctx.stroke();
- // collar detail
- ctx.fillStyle='#e7d0aa';ctx.beginPath();ctx.moveTo(-4,-12);ctx.lineTo(0,-8);ctx.lineTo(4,-12);ctx.fill();
- ctx.restore();
-}
-function drawStreetDetails(){
- // lamp posts
- for(let x=100;x<world.w;x+=230){
-  for(const y of [660,950]){
-   ctx.fillStyle='#343b3c';ctx.fillRect(x,y,4,27);
-   ctx.fillStyle='#e8c58a';ctx.beginPath();ctx.arc(x+2,y,5,0,Math.PI*2);ctx.fill();
-  }
- }
- // pavement seams
- ctx.strokeStyle='#766f62';ctx.globalAlpha=.32;ctx.lineWidth=1;
- for(let x=0;x<world.w;x+=60){ctx.beginPath();ctx.moveTo(x,680);ctx.lineTo(x,702);ctx.moveTo(x,905);ctx.lineTo(x,927);ctx.stroke()}
- ctx.globalAlpha=1;
- ctx.fillStyle='#ffffff88';ctx.font='bold 12px Arial';ctx.textAlign='center';
- ctx.fillText('BELLWOOD AVENUE',570,693);ctx.fillText('OLD TOWN ROAD',1350,693);
-}
-function drawWorld(){
- ctx.clearRect(0,0,W,H);
- if(inside){drawInterior();return}
- const camX=Math.max(0,Math.min(world.w-W,player.x-W/2));
- const camY=Math.max(0,Math.min(world.h-H,player.y-H/2));
- ctx.save();ctx.translate(-camX,-camY);
- drawGround();
- trees.forEach(drawTree);
- buildings.forEach(drawBuilding);
- cars.forEach(drawCar);
- drawStreetDetails();
- // NPCs and player are sorted by depth
- const actors=[...npcs.map(p=>({...p,player:false})),{...player,shirt:'#426b9a',skin:'#c58c68',hair:'#29242a,pants:'#353943',player:true}];
- actors.sort((a,b)=>a.y-b.y);
- actors.forEach(p=>drawPerson(p,p.player));
- if(mission===3){
-  ctx.fillStyle='#f4d08a';ctx.beginPath();ctx.arc(1590,1210,8+Math.sin(frame*.12)*2,0,Math.PI*2);ctx.fill();
- }
- ctx.restore();
-}
-function drawInterior(){
- ctx.fillStyle='#b79c7a';ctx.fillRect(0,0,W,H);
- ctx.fillStyle='#dfc9a6';ctx.fillRect(25,25,W-50,H-50);
- ctx.fillStyle='#94775f';ctx.fillRect(25,H-110,W-50,85);
- // floorboards
- ctx.strokeStyle='#846e59';ctx.globalAlpha=.5;
- for(let y=H-105;y<H-25;y+=17){ctx.beginPath();ctx.moveTo(25,y);ctx.lineTo(W-25,y);ctx.stroke()}
- for(let x=60;x<W;x+=100){ctx.beginPath();ctx.moveTo(x,H-110);ctx.lineTo(x,H-25);ctx.stroke()}
- ctx.globalAlpha=1;
- round(W*.1,H*.12,W*.8,80,7,'#455c5b');
- ctx.fillStyle='#f4e2c2';ctx.font='bold 18px Arial';ctx.textAlign='center';ctx.fillText(inside.name,W/2,H*.12+49);
- // counter
- round(W*.17,H*.38,W*.66,35,5,'#74513d');
- round(W*.17,H*.38,W*.66,8,3,'#b58a63');
- // shelf and details
- for(let i=0;i<5;i++){
-  round(W*.18+i*W*.13,H*.23,35,60,4,['#b96e4e','#638c78','#d0a45e','#7e789b','#bd815e'][i]);
- }
- // exit
- round(W/2-35,H-120,70,32,5,'#384b4b');
- ctx.fillStyle='#fff0d4';ctx.font='11px Arial';ctx.fillText('ÇIKIŞ',W/2,H-99);
- // player and interior NPC
- drawPerson({...player,x:W/2,y:H-175,shirt:'#426b9a',skin:'#c58c68',hair:'#29242a',pants:'#353943},true);
- drawPerson({...interiorPeople[0],x:W*.34,y:H*.48});
-}
-function distance(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
-function findNear(){
- near=null;
- if(inside){
-  if(player.y>350){near={type:'exit'};promptBox.style.display='block';promptBox.textContent='Dışarı çık · ETKİLEŞ'}
-  else promptBox.style.display='none';
-  return;
- }
- let best=88;
- npcs.forEach((p,i)=>{const d=distance(player,p);if(d<best){best=d;near={type:'npc',obj:p,index:i}}});
- buildings.forEach((b,i)=>{
-  const d=distance(player,{x:b.x+b.w/2,y:b.y+b.h-20});
-  if(d<best){best=d;near={type:'building',obj:b,index:i}}
- });
- if(mission===3&&distance(player,{x:1590,y:1210})<115){near={type:'console'};}
- if(near){
-  promptBox.style.display='block';
-  promptBox.textContent=near.type==='npc'?near.obj.name+' ile konuş · ETKİLEŞ':near.type==='console'?'Kontrol panelini incele · ETKİLEŞ':near.type==='building'?'İçeri gir · ETKİLEŞ':'';
- }else promptBox.style.display='none';
-}
-function say(name,texts){
- lines=texts;lineIndex=0;speaker.textContent=name;words.textContent=lines[0];dialogue.style.display='block';dialogueOpen=true;
-}
-function advance(){
- lineIndex++;
- if(lineIndex>=lines.length){dialogue.style.display='none';dialogueOpen=false;return}
- words.textContent=lines[lineIndex];
-}
-document.getElementById('next').addEventListener('click',advance);
-function interact(){
- if(dialogueOpen){advance();return}
- if(!near)return;
- if(near.type==='exit'){inside=null;player.x=doorReturn.x;player.y=doorReturn.y+25;return}
- if(near.type==='console'){
-  say('RADIO BELL',['Kontrol paneli çalışıyor.','Ekranda bir uyarı var: "SİSTEM NORMAL".','Bu şehirde normal kelimesi biraz fazla kullanılıyor.','Görev tamamlandı. Şimdilik.']);
-  mission=4;missionText.textContent='Görev tamamlandı: Şehir hâlâ ayakta.';return;
- }
- if(near.type==='building'){
-  const b=near.obj;doorReturn={x:b.x+b.w/2,y:b.y+b.h+12};
-  inside=b;player.x=W/2;player.y=H-175;return;
- }
- const i=near.index;
- if(i===0){
-  if(mission===0){
-   say('MALIK',['Yeni misin?','Burada herkes birbirini tanır. En azından birbirinin dedikodusunu.','Şu kafenin çalışanı Nia ile konuş. Sana mahalleyi anlatır. Ben anlatsam üç saat sürer.']);
-   mission=1;missionText.textContent='Görev: Nia ile konuş — Blue Note Cafe';
-  }else say('MALIK',['Yine mi sen? Mahallede başka insan yok mu?','Benim de işlerim var. Mesela burada dikilmek.']);
- }else if(i===1){
-  if(mission===1){
-   say('NIA',['Malik seni mi gönderdi?','O adamın boş zamanı çok. İşe yarar fikirleri ise sınırlı.','Radio Bell tarafında bir şeyler ters gidiyor. Bir bakabilir misin?']);
-   mission=2;missionText.textContent='Görev: Dev’i bul — Auto 88';
-  }else say('NIA',['Hoş geldin. Kahve mi?','Fiyatlar biraz arttı. Kahvenin kendisi aynı ama artık daha özgüvenli.']);
- }else{
-  if(mission===2){
-   say('DEV',['Radio Bell mi? Evet, orada elektrikler gidip geliyor.','Ben tamirciyim, sihirbaz değilim.','Kontrol paneline bir bak. Ama kablolarla fazla samimi olma.']);
-   mission=3;missionText.textContent='Görev: Radio Bell kontrol panelini incele';
-  }else say('DEV',['Araban bozulursa gel.','Bozulmasa da gel. Dükkânın kirası var.']);
- }
-}
-document.getElementById('action').addEventListener('pointerdown',e=>{e.preventDefault();interact()});
-function update(dt){
- if(!started||dialogueOpen)return;
- let x=input.x,y=input.y;
- if(keys.ArrowLeft||keys.a)x-=1;if(keys.ArrowRight||keys.d)x+=1;
- if(keys.ArrowUp||keys.w)y-=1;if(keys.ArrowDown||keys.s)y+=1;
- const len=Math.hypot(x,y);
- if(len>1){x/=len;y/=len}
- const speed=player.speed*(input.run?1.65:1)*dt;
- if(inside){
-  player.x=Math.max(55,Math.min(W-55,player.x+x*speed));
-  player.y=Math.max(70,Math.min(H-115,player.y+y*speed));
- }else{
-  player.x=Math.max(25,Math.min(world.w-25,player.x+x*speed));
-  player.y=Math.max(25,Math.min(world.h-25,player.y+y*speed));
- }
- if(Math.abs(x)>.1)player.dir=x>0?'right':'left';
- else if(Math.abs(y)>.1)player.dir=y>0?'down':'up';
- findNear();
-}
-let last=0;
-function loop(t){
- if(!started)return;
- const dt=Math.min((t-last)/16.67||1,2);last=t;frame++;
- update(dt);drawWorld();
- requestAnimationFrame(loop);
-}
-// Joystick: one captured pointer, no coordinate skew.
-let activePointer=null;
-function moveStick(e){
- const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
- let dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.34,len=Math.hypot(dx,dy);
- if(len>max){dx=dx/len*max;dy=dy/len*max}
- input.x=dx/max;input.y=dy/max;
- knob.style.left=`calc(50% + ${dx}px)`;knob.style.top=`calc(50% + ${dy}px)`;
-}
-function releaseStick(){
- activePointer=null;input.x=0;input.y=0;knob.style.left='50%';knob.style.top='50%';
-}
-stick.addEventListener('pointerdown',e=>{e.preventDefault();activePointer=e.pointerId;stick.setPointerCapture(e.pointerId);moveStick(e)});
-stick.addEventListener('pointermove',e=>{if(e.pointerId===activePointer){e.preventDefault();moveStick(e)}});
-stick.addEventListener('pointerup',e=>{if(e.pointerId===activePointer)releaseStick()});
-stick.addEventListener('pointercancel',releaseStick);
-stick.addEventListener('lostpointercapture',releaseStick);
-window.addEventListener('keydown',e=>{
- keys[e.key]=true;
- if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
- if(e.key===' '&&!e.repeat)interact();
-});
-window.addEventListener('keyup',e=>keys[e.key]=false);
-window.addEventListener('blur',()=>{Object.keys(keys).forEach(k=>keys[k]=false);releaseStick()});
-const runButton=document.getElementById('run');
-runButton.addEventListener('pointerdown',e=>{e.preventDefault();input.run=true});
-['pointerup','pointercancel','lostpointercapture'].forEach(ev=>runButton.addEventListener(ev,()=>input.run=false));
-})();
 </script>
 </body>
 </html>
