@@ -1,377 +1,208 @@
-
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buraya bakacağını düşünmemiştim.</title>
+<title></title>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Special+Elite&display=swap');
-
-:root {
-  --bg: #11120f;
-  --paper: #d0cdbd;
-  --muted: #77786d;
-  --green: #a3a77b;
-  --line: #383a30;
-  --yellow: #c2ae70;
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #080808;
 }
 
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background:
-    radial-gradient(ellipse at 75% 10%, #29291d 0%, transparent 35%),
-    var(--bg);
-  color: var(--paper);
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  line-height: 1.8;
+#bomb {
+    position: absolute;
+    left: 50%;
+    top: -100px;
+    width: 80px;
+    height: 80px;
+    margin-left: -40px;
+    background: #222;
+    border: 5px solid #555;
+    border-radius: 50%;
+    box-shadow: inset -12px -12px 15px #000,
+                8px 12px 20px #000;
+    z-index: 5;
 }
 
-main {
-  max-width: 980px;
-  margin: auto;
-  padding: 65px 25px 100px;
+#bomb:before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 25px;
+    background: #333;
+    left: 25px;
+    top: -25px;
+    border-radius: 5px;
 }
 
-header {
-  min-height: 390px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-bottom: 1px solid var(--line);
-  position: relative;
+#fuse {
+    position: absolute;
+    width: 25px;
+    height: 5px;
+    background: #8b4513;
+    left: 42px;
+    top: -28px;
+    transform: rotate(-35deg);
 }
 
-.tiny {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+#spark {
+    position: absolute;
+    left: 64px;
+    top: -38px;
+    width: 10px;
+    height: 10px;
+    background: #ffcc00;
+    border-radius: 50%;
+    box-shadow: 0 0 15px 8px #ff6600;
 }
 
-h1 {
-  font-family: 'Special Elite', serif;
-  font-size: clamp(35px, 7vw, 68px);
-  font-weight: 400;
-  line-height: 1.15;
-  max-width: 650px;
-  margin: 28px 0 20px;
+#boom {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 150px;
+    z-index: 20;
 }
 
-header p {
-  color: #aaa99b;
-  max-width: 490px;
+#message {
+    display: none;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: clamp(30px, 6vw, 65px);
+    font-weight: bold;
+    z-index: 30;
 }
 
-.header-bottom {
-  position: absolute;
-  bottom: 18px;
-  right: 0;
-  color: var(--muted);
-  font-size: 10px;
+@keyframes fall {
+    0% {
+        top: -100px;
+        transform: rotate(0deg);
+    }
+
+    70% {
+        top: calc(100vh - 180px);
+        transform: rotate(300deg);
+    }
+
+    82% {
+        top: calc(100vh - 110px);
+        transform: rotate(350deg) scale(1.1);
+    }
+
+    90% {
+        top: calc(100vh - 150px);
+        transform: rotate(380deg) scale(.95);
+    }
+
+    100% {
+        top: calc(100vh - 125px);
+        transform: rotate(400deg);
+    }
 }
 
-.content {
-  display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  gap: 55px;
-  padding-top: 55px;
+@keyframes boom {
+    0% {
+        transform: translate(-50%, -50%) scale(.1);
+        opacity: 0;
+    }
+
+    25% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(2.5);
+        opacity: 0;
+    }
 }
 
-h2 {
-  font-family: 'Special Elite', serif;
-  font-weight: 400;
-  font-size: 23px;
-  color: var(--green);
-  margin: 0 0 20px;
+@keyframes shake {
+    0% { transform: translate(0,0); }
+    20% { transform: translate(-12px,8px); }
+    40% { transform: translate(12px,-8px); }
+    60% { transform: translate(-8px,-5px); }
+    80% { transform: translate(8px,5px); }
+    100% { transform: translate(0,0); }
 }
 
-section {
-  margin-bottom: 55px;
-}
-
-.note {
-  border-left: 2px solid var(--green);
-  padding: 8px 18px;
-  color: #b8b6a8;
-  margin: 25px 0;
-}
-
-.scrap {
-  background: #1b1c17;
-  border: 1px solid var(--line);
-  padding: 20px;
-  margin: 18px 0;
-  transform: rotate(-.4deg);
-}
-
-.scrap:nth-child(even) { transform: rotate(.5deg); }
-
-.scrap small {
-  color: var(--muted);
-  display: block;
-  margin-bottom: 10px;
-}
-
-.scrap p { margin: 0; }
-
-button {
-  font-family: inherit;
-  color: var(--paper);
-  background: transparent;
-  border: 1px solid #555747;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: .2s;
-  font-size: 12px;
-}
-
-button:hover {
-  background: #333628;
-  border-color: var(--green);
-}
-
-.answer {
-  color: var(--yellow);
-  min-height: 35px;
-  margin-top: 15px;
-}
-
-ul {
-  padding-left: 18px;
-  color: #aaa99b;
-}
-
-li { padding: 5px 0; }
-
-.right {
-  padding-top: 8px;
-}
-
-.big-question {
-  font-family: 'Special Elite', serif;
-  font-size: 28px;
-  line-height: 1.4;
-  color: #c2bfae;
-  margin: 20px 0;
-}
-
-.crossed {
-  text-decoration: line-through;
-  color: #65665c;
-}
-
-.stamp {
-  display: inline-block;
-  border: 1px solid #777653;
-  color: var(--yellow);
-  padding: 4px 10px;
-  transform: rotate(-4deg);
-  font-size: 10px;
-  margin: 15px 0;
-}
-
-.letter {
-  font-family: 'Special Elite', serif;
-  font-size: 17px;
-  line-height: 1.7;
-  color: #b8b5a5;
-}
-
-hr {
-  border: 0;
-  border-top: 1px solid var(--line);
-  margin: 35px 0;
-}
-
-footer {
-  border-top: 1px solid var(--line);
-  padding-top: 25px;
-  color: var(--muted);
-  font-size: 10px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-a { color: var(--green); }
-
-@media(max-width:700px) {
-  main { padding: 35px 20px 70px; }
-  .content { grid-template-columns: 1fr; gap: 5px; }
-  header { min-height: 350px; }
-  .header-bottom { position: static; margin-top: 35px; }
+.shake {
+    animation: shake .4s;
 }
 </style>
 </head>
+
 <body>
-<main>
 
-<header>
-  <div class="tiny">bir internet köşesi / muhtemelen yanlışlıkla açık</div>
-  <h1>Buraya bakacağını düşünmemiştim.</h1>
-  <p>Buraya bakacağını düşünmemiştim o yüzden rastgele doldurdum. Yine de takılmak istersen buyur. 🥱</p>
-  <div class="header-bottom">Kapı açık. Neden açık bilmiyorum.</div>
-</header>
-
-<div class="content">
-<div>
-
-<section>
-  <div class="tiny">01 — önemli bir mesele</div>
-  <h2>Vaktini burada mı çürütüyorsun?</h2>
-  <div class="big-question">Hayatın anlamını bulmakla uğraşmadın mı?</div>
-  <p style="color:var(--muted)">Gerçi buraya kadar geldiysen muhtemelen baska planların da pek iyi gitmiyor.</p>
-  <div class="note">İnsanları kirmaya gerek var mi yok bencede.</div>
-</section>
-
-<section>
-  <div class="tiny">02 — rastgele bırakılmış şeyler</div>
-  <h2>Birileri bunları buraya koymuş.</h2>
-
-  <div class="scrap">
-    <small>not / 14:32</small>
-    <p>Bir gün her şeyi yoluna koyacağım. ama fazla üşengecim.</p>
-  </div>
-
-  <div class="scrap">
-    <small>önemli değil</small>
-    <p>Dolabın kapağını kapatınca içerideki eşyaların ne düşündüğünü hiç merak ettin mi? anca kendini düşün zaten</p>
-  </div>
-
-  <div class="scrap">
-    <small>yarım kalmış</small>
-    <p>Bugün çok verimli bir gün geçirecektim ama gün benden önce başladı. so sad buddy</p>
-  </div>
-
-  <div class="scrap">
-    <small>buluntu</small>
-    <p>Bir şeyleri unutmak için not alıp sonra notu unutmak. Güzel sistem.</p>
-  </div>
-</section>
-
-<section>
-  <div class="tiny">03 — küçük bir araştırma</div>
-  <h2>Bir saniyeliğine ciddi olalım.</h2>
-  <p>Şu an dünyanın herhangi bir yerinde biri yanlışlıkla bir odaya girip neden geldiğini unutmuştur.</p>
-  <p>O kişi yalnız değil.</p>
-  <p>Artık sen de yalnız değilsin.cidden</p>
-</section>
-
-<section>
-  <div class="tiny">04 — buraya yazılmamıştı</div>
-  <h2>Bir liste.</h2>
-  <ul>
-    <li>şu icmek.</li>
-    <li>sevdigim birinin bacagina sarilmak</li>
-    <li>bilincli bir şekilde altımmaa isemek.</li>
-    <li>saçımı turuncuya boyamak.</li>
-    <li>bilmiyorum.</li>
-    <li>Bu listeyi tamamlamak.</li>
-  </ul>
-</section>
-
+<div id="bomb">
+    <div id="fuse"></div>
+    <div id="spark"></div>
 </div>
 
-<div class="right">
+<div id="boom">💥</div>
 
-<section>
-  <div class="tiny">kenar notu</div>
-  <div class="stamp">ACİL DEĞİL</div>
-  <p class="letter">Burada bulunması için özel bir sebep olmayan bazı şeyler var.</p>
-  <p style="color:var(--muted)">Bunların bir kısmı bilerek, bir kısmı da kimse bakmaz diye bırakıldı.</p>
-</section>
-
-<section>
-  <div class="tiny">05 — tamamen gereksiz</div>
-  <h2>Bir soru soracağım.</h2>
-  <p>Bir gün boyunca sadece tek bir kelime söyleyebilseydin hangisini seçerdin?</p>
-  <button onclick="answer('peki')">oluroyleseyler</button>
-  <button onclick="answer('neyse')">he</button>
-  <button onclick="answer('efendim')">naz super biri</button>
-  <div class="answer" id="answer">Cevabın bir yere kaydedilmeyecek. Zaten kim kaydedecek?</div>
-</section>
-
-<section>
-  <div class="tiny">06 — beklenmedik bir şey</div>
-  <h2>Bir cümle bırak.</h2>
-  <p id="sentence" class="letter">Bugün de bir şekilde buraya geldik.</p>
-  <button onclick="newSentence()">Başka bir tane</button>
-</section>
-
-<section>
-  <div class="tiny">07 — ufak bir aksaklık</div>
-  <h2>Bir şey eksik.</h2>
-  <p id="missing" style="color:var(--muted)">Burada bir şey vardı sanki.</p>
-  <button onclick="missing()">Bak bakalım</button>
-</section>
-
-<section>
-  <div class="tiny">08 — kişisel meseleler</div>
-  <p class="letter">Bazen bir şey anlatmaya başlayıp ortasında ne anlatacağını unutuyorsun.</p>
-  <p>İşte tam olarak öyle bir bölüm.</p>
-  <hr>
-  <p style="color:var(--muted)">Bu bölümün devamı daha sonra eklenecekti.</p>
-  <p style="color:var(--muted)">Daha sonra gelmedi.</p>
-</section>
-
-<section>
-  <div class="tiny">09 — çıkışa yakın</div>
-  <h2>Hâlâ burada mısın?</h2>
-  <p>İyi. Ben de bir şey yapmıyordum zaten.</p>
-  <button onclick="document.getElementById('bye').textContent='Tamam. Kapıyı çekerken dikkat et. gecen üstüne cikmaya calistim biraz bozuk..'">Çıkıyorum</button>
-  <p id="bye" class="answer"></p>
-</section>
-
-</div>
+<div id="message">
+    naz elinden düsürdü prdn
 </div>
 
-<footer>
-  <span>Buraya kadar geldiğin için bir şey demeyeceğim.</span>
-  <span>© Kimse özellikle uğraşmadı.</span>
-</footer>
-
-</main>
+<!-- SENİN YÜKLEDİĞİN PATLAMA SESİ -->
+<audio id="explosionSound" preload="auto">
+    <source src="dragon-studio-nuclear-explosion-386181.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-function answer(word) {
-  document.getElementById('answer').textContent =
-    'Güzel. Bugünlük kelimen: ' + word + '. Başka bir şey söyleme hakkın yok, Aslına bakarsan burda ne yazdigininda oyle yinede sevdigim kelimelerdi onlara dikkat et.';
-}
 
-const sentences = [
-  'Birazdan bir şey yapacağım. Ne olduğunu bilmiyorum.',
-  'Buzdolabını açıp içine bakmak, aynen vaktini çalmak için yazdim.',
-  'Bazı günler sadece gün olmakla yetinmeli.',
-  'Bir şeyleri ertelemek de sonuçta bir şey yapmak.',
-  'Bence bu sayfada bir eksiklik var. Neyse.',
-  'Kendime bir iyilik yaptım. Sonra ne yaptığımı unuttum.',
-  'Bugün de evrenin küçük bir parçası olarak işimi yapmadım. varolgitsin'
-];
+const bomb = document.getElementById("bomb");
+const boom = document.getElementById("boom");
+const message = document.getElementById("message");
+const explosionSound = document.getElementById("explosionSound");
 
-function newSentence() {
-  const item = sentences[Math.floor(Math.random() * sentences.length)];
-  document.getElementById('sentence').textContent = item;
-}
 
-const missingThings = [
-  'Bir dakika, buraya ne koymuştuk?',
-  'Yok. Gerçekten yok.',
-  'Bunu aramaktan vazgeçtim.',
-  'Belki de hiç burada değildi.',
-  'Tamam, buldum. Hayır, o başka bir şeymiş.'
-];
+/* BOMBA DÜŞÜYOR */
+setTimeout(function() {
+    bomb.style.animation = "fall 1.4s ease-in forwards";
+}, 200);
 
-let missingIndex = 0;
-function missing() {
-  document.getElementById('missing').textContent =
-    missingThings[missingIndex % missingThings.length];
-  missingIndex++;
-}
+
+/* PATLAMA */
+setTimeout(function() {
+
+    bomb.style.display = "none";
+
+    boom.style.display = "block";
+    boom.style.animation = "boom .6s ease-out forwards";
+
+    document.body.classList.add("shake");
+
+    /* GERÇEK PATLAMA SESİ */
+    explosionSound.currentTime = 0;
+    explosionSound.play().catch(function() {
+        console.log("Tarayıcı sesi otomatik başlatmayı engelledi.");
+    });
+
+    /* YAZI */
+    setTimeout(function() {
+        message.style.display = "block";
+    }, 250);
+
+}, 1650);
+
 </script>
+
 </body>
 </html>
+```
